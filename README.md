@@ -18,9 +18,10 @@ Your Swagger definition lives here:
 
 ```
 http://localhost:8080/v1/swagger.json
-
+```
 
 Your Swagger UI lives here:
 
 ```
 localhost:8080/v1/ui
+```

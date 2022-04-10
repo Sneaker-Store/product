@@ -1,0 +1,130 @@
+---
+swagger: "2.0"
+info:
+  description: "Service to see products of store\n"
+  version: "1.0.0"
+  title: "Product"
+  termsOfService: "https://www.youtube.com/watch?v=tO0DCm7oClk"
+  contact:
+    email: "macias66@ua.pt"
+host: "localhost:8080"
+basePath: "/v1"
+tags:
+- name: "Products"
+  description: "GET, POST and DELETE products"
+
+paths:
+  /products:
+    get:
+      tags:
+      - "Product"
+      summary: "get product by query"
+      description: "This call should be used when you wish to find a group of products"
+      operationId: "get_product_by_query"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "ERROR: PRODUCTS NOT FOUND"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "swagger_server.controllers.product_controller"
+    post:
+      tags:
+      - "Product"
+      summary: "post product"
+      description: "This call should be used when you wish to post a new product"
+      operationId: "post_product"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "201":
+          description: "CREATED"
+        "400":
+          description: "ERROR: PRODUCT NOT POSTED"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "swagger_server.controllers.product_controller"
+    delete:
+      tags:
+      - "Product"
+      summary: "delete product by query"
+      description: "This call should be used when you wish to delete a group of products"
+      operationId: "delete_product"
+      produces:
+      - "application/json"
+      parameters: []
+      responses:
+        "200":
+          description: "OK"
+        "400":
+          description: "ERROR: PRODUCTS NOT DELETED"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "swagger_server.controllers.product_controller"
+  /products/{prodID}:
+    get:
+      tags:
+      - "Product"
+      summary: "get product by id"
+      description: "This call should be used when you wish to find a specific product"
+      operationId: "get_product_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "prodID"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "ERROR: ID NOT FOUND"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "swagger_server.controllers.product_controller"
+    delete:
+      tags:
+      - "Product"
+      summary: "delete product by id"
+      description: "This call should be used when you wish to delete a specific product"
+      operationId: "delete_product_by_id"
+      produces:
+      - "application/json"
+      parameters:
+      - name: "prodID"
+        in: "path"
+        required: true
+        type: "integer"
+      responses:
+        "200":
+          description: "OK"
+        "404":
+          description: "ERROR: ID NOT FOUND"
+          schema:
+            $ref: "#/definitions/Product"
+      x-swagger-router-controller: "swagger_server.controllers.product_controller"
+definitions:
+  Product:
+    type: "object"
+    properties:
+      prodID:
+        type: "integer"
+        example: 12345
+      brand:
+        type: "string"
+        example: "Nike"
+      name:
+        type: "string"
+        example: "Nike Air Force"
+      stock:
+        type: "integer"
+        example: 2
+      price:
+        type: "number"
+        example: 49.99000000000000198951966012828052043914794921875

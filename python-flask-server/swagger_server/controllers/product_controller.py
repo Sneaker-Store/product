@@ -1,16 +1,18 @@
-import connexion
-from itsdangerous import json
-from numpy import product
-import six
-
+import requests
 from swagger_server.models.product import Product as Product_model  # noqa: E501
-from swagger_server.models.db_model import Product as Product_db, db, ma, ProductSchema
+from swagger_server.models.db_model import Product as Product_db, db, ProductSchema
 from swagger_server import util
-from flask import Flask, jsonify, make_response, request
+from flask import make_response, request
 
 
 def delete_product():  # noqa: E501
     '''delete products based on query'''
+    headers = {'token': request.headers['token'], 'email': request.headers['email']}
+    r = requests.get('http://localhost:5000/auth', headers=headers)
+    if r.status_code != 200:
+        return make_response(
+            "Not authenticated", r.status_code
+        )
 
     brand = request.args.get('brand') #obtem o input do user localhost:8080/v1/products?brand=Nike
     name = request.args.get('name') #localhost:8080/v1/products?name=Reebok+Classic98
@@ -52,6 +54,12 @@ def delete_product():  # noqa: E501
 
 def delete_product_by_id(prodID):  # noqa: E501
     '''delete product based on ID'''
+    headers = {'token': request.headers['token'], 'email': request.headers['email']}
+    r = requests.get('http://localhost:5000/auth', headers=headers)
+    if r.status_code != 200:
+        return make_response(
+            "Not authenticated", r.status_code
+        )
 
     product = Product_db.query.filter_by(product_id = prodID).all() #verifica a existencia de um produto com esse id
 
@@ -69,6 +77,12 @@ def delete_product_by_id(prodID):  # noqa: E501
 
 def get_product_by_id(prodID):  # noqa: E501
     '''get product based on id'''
+    headers = {'token': request.headers['token'], 'email': request.headers['email']}
+    r = requests.get('http://localhost:5000/auth', headers=headers)
+    if r.status_code != 200:
+        return make_response(
+            "Not authenticated", r.status_code
+        )
 
     product = Product_db.query.filter_by(product_id = prodID).all() #guarda os produtos encontrados
 
@@ -83,6 +97,12 @@ def get_product_by_id(prodID):  # noqa: E501
 
 def get_product_by_query():  # noqa: E501
     '''get products based on query'''
+    headers = {'token': request.headers['token'], 'email': request.headers['email']}
+    r = requests.get('http://localhost:5000/auth', headers=headers)
+    if r.status_code != 200:
+        return make_response(
+            "Not authenticated", r.status_code
+        )
 
     brand = request.args.get('brand')
     name = request.args.get('name')
@@ -123,6 +143,12 @@ def post_product():
     #     db.session.add(new_product)
     #     db.session.commit()
     #     return product_schema.jsonify(new_product)
+    headers = {'token': request.headers['token'], 'email': request.headers['email']}
+    r = requests.get('http://localhost:5000/auth', headers=headers)
+    if r.status_code != 200:
+        return make_response(
+            "Not authenticated", r.status_code
+        )
     data = request.get_json()
     new_product = Product_db(**data)
     product_schema = ProductSchema()

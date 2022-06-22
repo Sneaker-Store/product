@@ -1,8 +1,7 @@
+from itsdangerous import json
 import requests
-from swagger_server.models.product import Product as Product_model  # noqa: E501
 from swagger_server.models.db_model import Product as Product_db, db, ProductSchema
-from swagger_server import util
-from flask import make_response, request
+from flask import jsonify, make_response, request
 
 
 def delete_product():  # noqa: E501
@@ -87,8 +86,9 @@ def get_product_by_id(prodID):  # noqa: E501
     product = Product_db.query.filter_by(product_id = prodID).all() #guarda os produtos encontrados
 
     if product:
-        product_schema = ProductSchema(many=True) #criado um objeto do tipo schema
-        return product_schema.jsonify(product) #para conseguir converter os dados da bd em json
+        return product.as_dict()
+        # product_schema = ProductSchema(many=True) #criado um objeto do tipo schema
+        # return product_schema.jsonify(product) #para conseguir converter os dados da bd em json
     else:
         return make_response(
             "Product ID {product_id} not found".format(product_id=prodID), 404
@@ -122,36 +122,24 @@ def get_product_by_query():  # noqa: E501
     else:
         products = Product_db.query.filter().all()
 
-    product_schema = ProductSchema(many=True)
-    return product_schema.jsonify(products)
+    return jsonify([ prod.as_dict() for prod in products])
+    #product_schema = ProductSchema(many=True)
+    #return product_schema.jsonify(products)
 
 
 def post_product():
-    #para este caso meter product como param da funcao
-    # prodName = product.get('product_name')
-    # prodBrand = product.get('product_brand')
-
-    # existing_product = Product_db.query.filter(Product_db.product_name == prodName).filter(Product_db.product_brand == prodBrand).all()
-
-    # if existing_product:
+    # headers = {'token': request.headers.get('token'), 'email': request.headers.get('email')}
+    # r = requests.get('http://localhost:5000/auth', headers=headers)
+    # if r.status_code != 200:
     #     return make_response(
-    #         "Product {product_name} {product_brand} already exists".format(product_name=prodName, product_brand=prodBrand), 400
+    #         "Not authenticated", r.status_code
     #     )
-    # else:
-    #     product_schema = ProductSchema(many=True)
-    #     new_product = product_schema.load(product, session=db.session).data
-    #     db.session.add(new_product)
-    #     db.session.commit()
-    #     return product_schema.jsonify(new_product)
-    headers = {'token': request.headers['token'], 'email': request.headers['email']}
-    r = requests.get('http://localhost:5000/auth', headers=headers)
-    if r.status_code != 200:
-        return make_response(
-            "Not authenticated", r.status_code
-        )
-    data = request.get_json()
-    new_product = Product_db(**data)
-    product_schema = ProductSchema()
+    data = request.get_json(force=True)
+    print(data)
+    print("--------")
+    new_product = Product_db(brand=data['brand'], name=data['name'], price=data['price'], stock=data['stock'])
+    #product_schema = ProductSchema()
     db.session.add(new_product)
     db.session.commit()
-    return product_schema.jsonify(new_product)
+    return make_response("done", 201)
+    #return product_schema.jsonify(new_product)

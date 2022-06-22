@@ -1,9 +1,6 @@
 # coding: utf-8
 
 from __future__ import absolute_import
-from datetime import date, datetime  # noqa: F401
-
-from typing import List, Dict  # noqa: F401
 
 from swagger_server.models.base_model_ import Model
 from swagger_server import util
@@ -15,7 +12,7 @@ class Product(Model):
     Do not edit the class manually.
     """
 
-    def __init__(self, prod_id: int=None, brand: str=None, name: str=None, stock: int=None, price: float=None):  # noqa: E501
+    def __init__(self, brand: str=None, name: str=None, stock: int=None, price: float=None):  # noqa: E501
         """Product - a model defined in Swagger
 
         :param prod_id: The prod_id of this Product.  # noqa: E501
@@ -30,7 +27,7 @@ class Product(Model):
         :type price: float
         """
         self.swagger_types = {
-            'prod_id': int,
+            #'prod_id': int,
             'brand': str,
             'name': str,
             'stock': int,
@@ -38,14 +35,14 @@ class Product(Model):
         }
 
         self.attribute_map = {
-            'prod_id': 'prodID',
+            #'prod_id': 'prodID',
             'brand': 'brand',
             'name': 'name',
             'stock': 'stock',
             'price': 'price'
         }
 
-        self._prod_id = prod_id
+        #self._prod_id = prod_id
         self._brand = brand
         self._name = name
         self._stock = stock
@@ -62,26 +59,26 @@ class Product(Model):
         """
         return util.deserialize_model(dikt, cls)
 
-    @property
-    def prod_id(self) -> int:
-        """Gets the prod_id of this Product.
+    # @property
+    # def prod_id(self) -> int:
+    #     """Gets the prod_id of this Product.
 
 
-        :return: The prod_id of this Product.
-        :rtype: int
-        """
-        return self._prod_id
+    #     :return: The prod_id of this Product.
+    #     :rtype: int
+    #     """
+    #     return self._prod_id
 
-    @prod_id.setter
-    def prod_id(self, prod_id: int):
-        """Sets the prod_id of this Product.
+    # @prod_id.setter
+    # def prod_id(self, prod_id: int):
+    #     """Sets the prod_id of this Product.
 
 
-        :param prod_id: The prod_id of this Product.
-        :type prod_id: int
-        """
+    #     :param prod_id: The prod_id of this Product.
+    #     :type prod_id: int
+    #     """
 
-        self._prod_id = prod_id
+    #     self._prod_id = prod_id
 
     @property
     def brand(self) -> str:

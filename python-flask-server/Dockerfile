@@ -1,16 +1,13 @@
 FROM python:3-alpine
 
-RUN mkdir -p /usr/src/app
-WORKDIR /usr/src/app
+WORKDIR /productapi-app
 
-COPY requirements.txt /usr/src/app/
+COPY src/requirements.txt /productapi-app/
 
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip3 install -r requirements.txt
 
-COPY . /usr/src/app
+COPY src/ /productapi-app/
 
 EXPOSE 8080
 
-ENTRYPOINT ["python3"]
-
-CMD ["-m", "swagger_server"]
+CMD ["python3", "-m", "swagger_server"]
